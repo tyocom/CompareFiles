@@ -91,13 +91,27 @@ namespace CompareLists
         {
             List<string> thelist = CreateList(txtFile2.Text);
             CompareFileToList(txtFile1.Text, thelist);
+            MessageBox.Show("Finished");
         }
 
-        private void CompareFileToList (string filename, List<string> l)
+        private void CompareFileToList(string filename, List<string> l)
         {
             StreamReader sr = new StreamReader(filename);
+            StreamWriter sw = new StreamWriter(txtOutput.Text);
+            while (sr.Peek() > -1)
+            {
+                string dataline = sr.ReadLine();
+                string[] flds = Regex.Split(dataline, "\t");
+                int fieldtocheck = Convert.ToInt32(cboField.Text);
+                if (!l.Contains(flds[fieldtocheck]))
+                {
+                    //write to output file
+                    sw.WriteLine(flds[fieldtocheck]);
+                }
 
+            }
             sr.Close();
+            sw.Close();
         }
 
     }
